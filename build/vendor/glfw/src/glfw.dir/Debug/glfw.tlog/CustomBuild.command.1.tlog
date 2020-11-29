@@ -1,0 +1,10 @@
+^D:\UNIVERSITY\THIRD YEAR\GRAPHICS\NEW_BETENGAN\VENDOR\GLFW\SRC\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" "-SD:/university/third year/graphics/New_Betengan" "-BD:/university/third year/graphics/New_Betengan/build" --check-stamp-file "D:/university/third year/graphics/New_Betengan/build/vendor/glfw/src/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
