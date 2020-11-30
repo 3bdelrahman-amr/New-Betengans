@@ -85,7 +85,7 @@ void GLAPIENTRY opengl_callback(GLenum source, GLenum type, GLuint id, GLenum se
     }
 
     std::cout << "OpenGL Debug Message " << id << " (type: " << _type << ") of " << _severity
-    << " raised from " << _source << ": " << message << std::endl;
+              << " raised from " << _source << ": " << message << std::endl;
 }
 
 ///////////////////////////////////////////////////
@@ -137,7 +137,11 @@ Betngan::WindowConfiguration Betngan::Application::getWindowConfiguration() {
 
 // This is the main class function that run the whole application (Initialize, Game loop, House cleaning).
 
-
+///////////////////////////////////////////////////////////////////
+void Betngan::Application::goToState(State* state) {
+    this->nextState=state;
+}
+//////////////////////////////////////////////////////////////////
 
 
 ///////////////////////////////////////////////////////////////////
@@ -207,8 +211,16 @@ int Betngan::Application::run() {
     ImGui_ImplOpenGL3_Init("#version 330 core");
 
     // Call onInitialize if the application needs to do some custom initialization (such as file loading, object creation, etc).
-    onInitialize();
+    //onInitialize();
+    manager.Init();
+    currentState->setManager(&manager);
+    nextState->setManager(&manager);
 
+    if (nextState!=nullptr){
+        currentState=nextState;
+        nextState= nullptr;
+        currentState->onEnter(&mouse,&keyboard,window);
+    }
     // The time at which the last frame started. But there was no frames yet, so we'll just pick the current time.
     double last_frame_time = glfwGetTime();
 
@@ -221,6 +233,7 @@ int Betngan::Application::run() {
         ImGui::NewFrame();
 
         onImmediateGui(io); // Call to run any required Immediate GUI.
+        currentState->onImmediateGui(io);
 
         // If ImGui is using the mouse or keyboard, then we don't want the captured events to affect our keyboard and mouse objects.
         // For example, if you're focusing on an input and writing "W", the keyboard object shouldn't record this event.
@@ -237,10 +250,25 @@ int Betngan::Application::run() {
 
         // Get the current time (the time at which we are starting the current frame).
         double current_frame_time = glfwGetTime();
-
+        ///////////////////////////////////////
+        ///////////////////////////////////////
+        ///////////////////////////////////////
+        if (nextState!=nullptr){
+            if (currentState!= nullptr) currentState->onExit();
+            currentState=nextState;
+            nextState= nullptr;
+            currentState->onEnter(&mouse,&keyboard,window);
+        }
+        if (currentState!=nullptr){
+            currentState->onDraw(current_frame_time - last_frame_time);
+            currentState->onImmediateGui(io);
+        }
+        ///////////////////////////////////////
+        ///////////////////////////////////////
+        ///////////////////////////////////////
         // Call onDraw, in which we will draw the current frame, and send to it the time difference between the last and current frame
         getShapeToDraw();
-        onDraw(current_frame_time - last_frame_time);
+        //onDraw(current_frame_time - last_frame_time);
         last_frame_time = current_frame_time; // Then update the last frame start time (this frame is now the last frame)
 
 #if defined(ENABLE_OPENGL_DEBUG_MESSAGES)
@@ -264,7 +292,8 @@ int Betngan::Application::run() {
     }
 
     // Call for cleaning up
-    onDestroy();
+    //onDestroy();
+    if (currentState != nullptr) currentState->onExit();
 
     // Shutdown ImGui & destroy the context
     ImGui_ImplOpenGL3_Shutdown();

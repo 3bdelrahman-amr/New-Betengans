@@ -156,7 +156,7 @@ public:
     }
 
     // read the element data from the GPU. Don't use frequently (for the sake of performance)
-    template<typename T>
+ /*   template<typename T>
     void getElementData(std::vector<T>& elements) {
         assert(sizeof(T) == element_size);
         GLint size;
@@ -165,7 +165,7 @@ public:
         assert((size % sizeof(T)) == 0);
         elements.resize(size / sizeof(T));
         glGetBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, size, elements.data());
-    }
+    }*/
 
     // read the element data from the GPU. Don't use frequently (for the sake of performance)
     template<typename T>
@@ -212,7 +212,7 @@ public:
     }
 
     // Set vertex data to a part of the buffer from a raw pointer
-    template<typename T>
+/*    template<typename T>
     void setVertexSubData(size_t buffer_index, T const* data, GLintptr offset, size_t count, GLenum usage = GL_STATIC_DRAW) {
         if (buffer_index >= vertex_buffers.size()) {
             std::cerr << "MESH ERROR: Setting vertex data to an out-of-bound vertex buffer (" << buffer_index << " >= " << vertex_buffers.size() << ")\n";
@@ -220,10 +220,10 @@ public:
         }
         glBindBuffer(GL_ARRAY_BUFFER, vertex_buffers[buffer_index]);
         glBufferSubData(GL_ARRAY_BUFFER, offset, count * sizeof(T), data, usage);
-    }
+    }*/
 
     // read the vertex data from the GPU. Don't use frequently (for the sake of performance)
-    template<typename T>
+ /*   template<typename T>
     void getVertexData(size_t buffer_index, std::vector<T>& vertices, GLintptr offset = 0, size_t count = 0) {
         if (buffer_index >= vertex_buffers.size()) {
             std::cerr << "MESH ERROR: Requesting vertex data to an out-of-bound vertex buffer (" << buffer_index << " >= " << vertex_buffers.size() << ")\n";
@@ -242,7 +242,7 @@ public:
             vertices.resize(count);
         }
         glGetBufferSubData(GL_ARRAY_BUFFER, offset, size, vertices.data());
-    }
+    }*/
 
     // read the vertex data from the GPU. Don't use frequently (for the sake of performance)
     template<typename T>

@@ -56,6 +56,7 @@ include_directories(
         vendor/utils
         systems
         components
+        states
         src
         src/Application
         src/Application/input
