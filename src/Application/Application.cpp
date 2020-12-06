@@ -212,9 +212,10 @@ int Betngan::Application::run() {
 
     // Call onInitialize if the application needs to do some custom initialization (such as file loading, object creation, etc).
     //onInitialize();
-    manager.Init();
-    currentState->setManager(&manager);
-    nextState->setManager(&manager);
+    Manager* manager = new Manager;
+    manager->Init();
+    //currentState->setManager(&manager);
+    nextState->setManager(manager);
 
     if (nextState!=nullptr){
         currentState=nextState;

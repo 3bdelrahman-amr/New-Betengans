@@ -29,7 +29,7 @@ namespace Betngan {
         Keyboard keyboard;                  // Instance of "our" keyboard class that handles keyboard functionalities.
         Mouse mouse;                        // Instance of "our" mouse class that handles mouse functionalities.
         /////////////////////////////
-        Manager manager;
+       // Manager manager;
         State*  currentState;
         State*  nextState;
         /////////////////
